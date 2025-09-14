@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puja Special</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background: linear-gradient(to top, #ffe6f0, #ffcce6);
+    font-family: Arial, sans-serif;
+  }
+
+  #emoji-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  .emoji {
+    position: absolute;
+    font-size: var(--emoji-size, 2rem);
+    user-select: none;
+    pointer-events: none;
+    display: inline-block;
+    will-change: transform;
+  }
+
+  /* Responsive emoji size */
+  @media (max-width: 1024px) { .emoji { font-size: 1.8rem; } }
+  @media (max-width: 768px) { .emoji { font-size: 1.5rem; } }
+  @media (max-width: 480px) { .emoji { font-size: 1.2rem; } }
+
+  /* Top text static */
+  #top-text {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ff0066;
+    text-shadow: 2px 2px 5px #fff;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  @media (max-width: 768px) { #top-text { font-size: 2rem; } }
+  @media (max-width: 480px) { #top-text { font-size: 1.5rem; } }
+
+  /* Rising hearts */
+  .rising-heart {
+    position: absolute;
+    font-size: 1.2rem;
+    color: #ff0066;
+    opacity: 0;
+    pointer-events: none;
+    animation: rise 2s linear forwards;
+    z-index: 5;
+  }
+
+  @keyframes rise {
+    0% { transform: translateY(0) scale(0.8); opacity: 0.8; }
+    100% { transform: translateY(-80px) scale(1.2); opacity: 0; }
+  }
+
+  /* Text & Clocks */
+  #text-container {
+    position: absolute;
+    top: 100px;
+    width: 100%;
+    text-align: center;
+    z-index: 20;
+    color: black;
+    font-size: 1.2rem;
+  }
+
+  .clock-box {
+    display: inline-block;
+    background: white;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 0 10px red;
+    color: red;
+  }
+
+  /* Gif styling */
+  #gif-box {
+    margin-top: 20px;
+  }
+  #gif-box img {
+    border: 5px solid white;
+    border-radius: 10px;
+    max-width: 40%;
+    height: auto;
+  }
+
+  /* Button styling */
+  #next-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff0066;
+    color: white;
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff0066;
+    z-index: 30;
+    transition: 0.3s;
+  }
+  #next-btn:hover {
+    transform: translateX(-50%) scale(1.05);
+  }
+
+</style>
+</head>
+<body>
+<div id="top-text">♥️ Pujuuuuuu ♥️</div>
+
+<div id="text-container">
+  <div>You know Madam Ji, you have officially been on this planet for</div>
+  <div id="clock1" class="clock-box"></div>
+
+  <div style="margin-top:20px;">But I have been irritating you only for:</div>
+  <div id="clock2" class="clock-box"></div>
+
+  <div id="gif-box">
+    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2h0MGxnajZ6MzMyZHM3MTI1ZnU4MjI0eDFpNWZpeHloOG51MTR2YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Muqi0FGTBQhqnS1maR/giphy.gif" alt="Cute Gif">
+  </div>
+</div>
+
+<!-- Next button -->
+<button id="next-btn" onclick="window.location.href='second.html'">Chal Hat</button>
+
+<div id="emoji-container"></div>
+
+<script>
+/* ---------------- Rising hearts ---------------- */
+function createCornerHeart(side) {
+  const heart = document.createElement("div");
+  heart.className = "rising-heart";
+  heart.innerText = "❤️";
+  document.body.appendChild(heart);
+
+  const textRect = document.getElementById("top-text").getBoundingClientRect();
+  let x;
+  if (side === "left") x = textRect.left + 2; 
+  else x = textRect.right - 16; 
+  const y = textRect.top + 2; 
+  heart.style.left = `${x}px`;
+  heart.style.top = `${y}px`;
+
+  setTimeout(() => heart.remove(), 2000);
+}
+setInterval(() => {
+  createCornerHeart("left");
+  createCornerHeart("right");
+}, 400);
+
+/* ---------------- Clocks ---------------- */
+function updateClocks() {
+  const start1 = new Date("2000-09-17T12:00:00");
+  const start2 = new Date("2024-03-15T15:00:00");
+  const now = new Date();
+
+  function diffString(start) {
+    let diff = Math.floor((now - start) / 1000);
+    const years = Math.floor(diff / (365*24*60*60)); diff %= 365*24*60*60;
+    const months = Math.floor(diff / (30*24*60*60)); diff %= 30*24*60*60;
+    const days = Math.floor(diff / (24*60*60)); diff %= 24*60*60;
+    const hours = Math.floor(diff / 3600); diff %= 3600;
+    const minutes = Math.floor(diff / 60); 
+    const seconds = diff % 60;
+    return `${years} Years ${months} Months ${days} Days ${hours} Hours ${minutes} Min ${seconds} Sec`;
+  }
+
+  document.getElementById("clock1").innerText = diffString(start1);
+  document.getElementById("clock2").innerText = diffString(start2);
+}
+setInterval(updateClocks, 1000);
+updateClocks();
+
+/* ---------------- Emoji dune effect ---------------- */
+const emojis = ["🙂","🙃","😌","🥰","😍","🤩","🫨","🌚","🤭"];
+const container = document.getElementById("emoji-container");
+const numPerLayer = 25;
+let emojiObjects = [];
+
+function getEmojiSize() {
+  if (window.innerWidth <= 480) return 20;  
+  if (window.innerWidth <= 768) return 28;  
+  return 34; 
+}
+function duneCurve(x, width, height) { return Math.sin((x / width) * Math.PI * 2) * height; }
+function createEmoji(x, y, layer=false) {
+  const span = document.createElement("span");
+  span.className = "emoji";
+  span.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+  container.appendChild(span);
+  let rotation = Math.random() * 360;
+  let rotSpeed = (Math.random() * 1 - 0.5) * 0.4;
+  let obj = {el: span, x, y, vx: 0, vy: 0, rot: rotation, rotSpeed, resting: layer};
+  emojiObjects.push(obj);
+  return obj;
+}
+function createBaseDune() {
+  emojiObjects = [];
+  container.innerHTML = "";
+  let width = window.innerWidth;
+  for (let layer = 0; layer < 5; layer++) {
+    for (let i = 0; i < numPerLayer; i++) {
+      let size = getEmojiSize();
+      let x = Math.random() * (width - size);
+      let duneHeight = 50 + layer * 30;
+      let yBase = window.innerHeight - duneHeight + duneCurve(x, width, 20);
+      let y = yBase - Math.random() * 15;
+      createEmoji(x, y, true);
+    }
+  }
+}
+createBaseDune();
+window.addEventListener("resize", () => createBaseDune());
+
+let tiltX = 0;
+window.addEventListener("deviceorientation", (e) => { tiltX = e.gamma || 0; });
+
+function ripple(x, y) {
+  emojiObjects.forEach(obj => {
+    let dx = obj.x - x;
+    let dy = obj.y - y;
+    let dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist < 120) { obj.vx += dx / dist * 6; obj.vy += dy / dist * 6; obj.resting = false; }
+  });
+}
+window.addEventListener("mousemove", (e) => ripple(e.clientX, e.clientY));
+window.addEventListener("touchstart", (e) => { ripple(e.touches[0].clientX, e.touches[0].clientY); });
+
+let wind = 0, windTarget = 0;
+setInterval(() => { windTarget = (Math.random() - 0.5) * 0.2; }, 5000);
+
+function handleCollisions() {
+  const size = getEmojiSize();
+  const radius = size / 2;
+  for (let i = 0; i < emojiObjects.length; i++) {
+    for (let j = i + 1; j < emojiObjects.length; j++) {
+      let a = emojiObjects[i], b = emojiObjects[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      let dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < radius * 2) {
+        let overlap = (radius * 2 - dist) / 2;
+        let nx = dx / dist || 0, ny = dy / dist || 0;
+        a.x -= nx * overlap; a.y -= ny * overlap;
+        b.x += nx * overlap; b.y += ny * overlap;
+      }
+    }
+  }
+}
+setInterval(() => {
+  let x = Math.random() * window.innerWidth;
+  let y = -30;
+  let obj = createEmoji(x, y, false);
+  obj.vy = 2 + Math.random() * 2;
+}, 600);
+setInterval(() => {
+  let width = window.innerWidth;
+  for (let i = 0; i < 10; i++) {
+    let x = Math.random() * (width - getEmojiSize());
+    let duneHeight = 100 + Math.floor(emojiObjects.length / 50) * 5;
+    let yBase = window.innerHeight - duneHeight + duneCurve(x, width, 20);
+    let y = yBase - Math.random() * 15;
+    createEmoji(x, y, true);
+  }
+}, 5000);
+function animate() {
+  wind += (windTarget - wind) * 0.01;
+  const size = getEmojiSize();
+  emojiObjects.forEach(obj => {
+    if (!obj.resting) {
+      obj.vy += 0.25;
+      obj.vx += tiltX * 0.05;
+      obj.vx += wind;
+      obj.vx *= 0.98; obj.vy *= 0.98;
+      obj.x += obj.vx; obj.y += obj.vy;
+      obj.rot += obj.rotSpeed;
+      if (obj.x < 0) { obj.x = 0; obj.vx *= -0.4; }
+      if (obj.x > window.innerWidth - size) { obj.x = window.innerWidth - size; obj.vx *= -0.4; }
+      if (obj.y > window.innerHeight - size) { 
+        obj.y = window.innerHeight - size; 
+        obj.vy *= -0.4;
+        if (Math.abs(obj.vy) < 0.3) obj.resting = true;
+      }
+      if (obj.y < 0) obj.y = 0;
+    }
+    obj.el.style.transform = `translate(${obj.x}px, ${obj.y}px) rotate(${obj.rot}deg)`;
+  });
+  handleCollisions();
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>

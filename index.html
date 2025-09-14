@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hii Madamji 💖</title>
+
+<style>
+@font-face {
+  font-family: 'Calliographer';
+  src: url('https://cdn.jsdelivr.net/gh/abhishekkumar-official/fonts/Calliographer.woff') format('woff');
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  position: relative;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+}
+
+/* Bokeh */
+.bokeh {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.bokeh span {
+  position: absolute;
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  animation: floatBokeh linear infinite;
+}
+@keyframes floatBokeh { 0% { transform: translateY(100vh) scale(0.5); opacity:0; } 50%{opacity:1;} 100%{transform: translateY(-50px) scale(1.2); opacity:0;} }
+
+/* Heart Balloons */
+/* Slightly smaller on desktop */
+.balloon {
+  position: absolute;
+  bottom: 0;
+  width: clamp(18px,3.5vw,42px);
+  height: clamp(18px,3.5vw,42px);
+  background-color: red;
+  transform: rotate(-45deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+}
+.balloon::before,
+.balloon::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+  border-radius: 50%;
+}
+.balloon::before { top: -50%; left: 0; }
+.balloon::after { left: 50%; top: 0; }
+@keyframes riseFlutter {
+  0%   { transform: translateY(0) translateX(0) rotateY(0deg) rotateZ(var(--start-rot)); opacity:1; }
+  25%  { transform: translateY(-30vh) translateX(var(--flutter-dist)) rotateY(var(--tilt)) rotateZ(var(--rot1)); }
+  50%  { transform: translateY(-60vh) translateX(calc(var(--flutter-dist)*-1)) rotateY(calc(var(--tilt)*-1)) rotateZ(var(--rot2)); }
+  75%  { transform: translateY(-90vh) translateX(var(--flutter-dist)) rotateY(var(--tilt)) rotateZ(var(--rot3)); }
+  100% { transform: translateY(-120vh) translateX(0) rotateY(0deg) rotateZ(var(--rot4)); opacity:0; }
+}
+.rise { animation: riseFlutter 6s cubic-bezier(0.65,0,0.35,1) forwards; }
+
+/* Title Box */
+.title-box {
+  background: white;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  margin-bottom: 15px;
+  text-align: center;
+  max-width: 90%;
+  overflow: hidden;
+  z-index: 3;
+  position: relative;
+}
+.title-box h1 {
+  color: #ff4081;
+  font-family: 'Calliographer', cursive;
+  font-size: clamp(1.5em,6vw,2.5em);
+  margin:0;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 0.15em solid #ff4081;
+  animation: typing 3s steps(20) 1, blink 0.75s step-end infinite;
+}
+@keyframes typing { from{width:0;} to{width:100%;} }
+@keyframes blink { from,to{border-color:transparent;} 50%{border-color:#ff4081;} }
+
+/* GIF */
+img { width: clamp(120px,40vw,180px); max-width:90%; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.2); margin-bottom:15px; z-index:3; position:relative; }
+
+/* Buttons */
+.btn { padding:10px 20px; font-size:clamp(1em,4vw,1.2em); border:none; border-radius:12px; cursor:pointer; margin:8px; color:white; box-shadow:0 4px 8px rgba(0,0,0,0.3); transition:0.3s; z-index:3; position:relative; }
+.kya-btn { background-color:#ff4081; animation:pulse 1.5s infinite; }
+.kya-btn:hover { background-color:#e91e63; }
+@keyframes pulse {0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);} }
+.nikal-btn { background-color:#009688; position:absolute; transition:left 0.5s ease, top 0.5s ease; z-index:3; }
+
+/* GIF Popup */
+.gif-popup { position:fixed; transform:translate(-50%,-50%); display:none; z-index:4; max-width:80vw; }
+.gif-popup img { width:auto; max-width:60vw; height:auto; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,0.4); }
+
+/* Shake */
+@keyframes shake { 0%{transform:translate(0,0) rotate(0deg);}20%{transform:translate(-5px,0) rotate(-5deg);}40%{transform:translate(5px,0) rotate(5deg);}60%{transform:translate(-5px,0) rotate(-5deg);}80%{transform:translate(5px,0) rotate(5deg);}100%{transform:translate(0,0) rotate(0deg);} }
+.shake { animation:shake 0.4s ease; }
+
+/* Smartphone adjustment */
+@media screen and (max-width:768px){
+  #balloon-container { bottom:15px; }
+  .balloon { width: clamp(30px,5vw,60px); height: clamp(30px,5vw,60px); }
+}
+</style>
+</head>
+<body>
+
+<div class="bokeh"></div>
+<div id="balloon-container"></div>
+
+<div class="title-box">
+  <h1>Hii Madamji 💖</h1>
+</div>
+
+<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3FubWRmbWplY3k5cXFrbmZwenVsdngxa21pNHFmenN3djMxb3RtdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WzCW1umvg6woqQFLNQ/giphy.gif" alt="Cute Gif">
+
+<button class="btn kya-btn" onclick="window.location.href='first.html'">Kya hai ❓</button>
+<button class="btn nikal-btn" id="nikalBtn">Nikal 😆</button>
+
+<div class="gif-popup" id="gifPopup">
+  <img id="popupGif" src="" alt="Funny Gif">
+</div>
+
+<script>
+// Bokeh
+const bokehContainer = document.querySelector('.bokeh');
+for(let i=0;i<30;i++){
+  const b=document.createElement('span');
+  b.style.left=Math.random()*100+'vw';
+  b.style.width=5+Math.random()*15+'px';
+  b.style.height=b.style.width;
+  b.style.animationDuration=5+Math.random()*5+'s';
+  b.style.animationDelay=Math.random()*5+'s';
+  bokehContainer.appendChild(b);
+}
+
+// Balloons
+const balloonColors=['#FF3B3F','#FF9F1C','#2EC4B6','#E71D36','#FFAC81','#FF6F61','#6A5ACD','#FFD700'];
+const balloonContainerEl=document.getElementById('balloon-container');
+const totalBalloons=12;
+let balloons=[];
+function createBalloon(leftPos){
+  const balloon=document.createElement('div');
+  balloon.classList.add('balloon');
+  balloon.style.left=`${leftPos}%`;
+  balloon.style.backgroundColor=balloonColors[Math.floor(Math.random()*balloonColors.length)];
+  balloon.style.setProperty('--flutter-dist',`${5+Math.random()*15}px`);
+  balloon.style.setProperty('--start-rot',`${-45+Math.random()*10}deg`);
+  balloon.style.setProperty('--rot1',`${-42+Math.random()*10}deg`);
+  balloon.style.setProperty('--rot2',`${-47+Math.random()*10}deg`);
+  balloon.style.setProperty('--rot3',`${-44+Math.random()*10}deg`);
+  balloon.style.setProperty('--rot4',`${-48+Math.random()*10}deg`);
+  balloon.style.setProperty('--tilt',`${5+Math.random()*5}deg`);
+  balloonContainerEl.appendChild(balloon);
+  return balloon;
+}
+for(let i=0;i<totalBalloons;i++){
+  balloons.push(createBalloon(5+i*7));
+}
+setInterval(()=>{
+  if(balloons.length===0) return;
+  const balloon=balloons.shift();
+  balloon.classList.add('rise');
+  balloons.push(createBalloon(Math.random()*90+5));
+},1000);
+
+// Nikal button
+const nikalBtn=document.getElementById('nikalBtn');
+let displacementCount=0;
+const gifPopup=document.getElementById('gifPopup');
+const popupGif=document.getElementById('popupGif');
+const gifs=[
+  "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjVveGowam50M3VhN3BybzZ5MXN6ajkwYnEyb3E4am5jamtoMnp0OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Lnosn2KscCaJb6fjut/giphy.gif",
+  "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXgxeHE4N2xvcmdxbzRwbjVpZ2ZlZmhsdHQwdDRkZWZ5OHhxM2Z5dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3TfeO5nMXU9je2xToC/giphy.gif"
+];
+
+function makeItShake(btn){btn.classList.add("shake");setTimeout(()=>btn.classList.remove("shake"),400);}
+function showGifNearButton(){
+  const rect=nikalBtn.getBoundingClientRect();
+  const randomGif=gifs[Math.floor(Math.random()*gifs.length)];
+  popupGif.src=randomGif;
+  popupGif.style.width=`${0.5+Math.random()*0.5*300}px`;
+  gifPopup.style.display="block";
+  gifPopup.style.left=rect.left+window.scrollX+60+"px";
+  popupGif.style.top=rect.top+window.scrollY-20+"px";
+  setTimeout(()=>{gifPopup.style.display="none";},4000);
+}
+function keepInside(x,y){
+  const btnW=nikalBtn.offsetWidth, btnH=nikalBtn.offsetHeight;
+  return [Math.min(window.innerWidth-btnW,Math.max(0,x)),Math.min(window.innerHeight-btnH,Math.max(0,y))];
+}
+
+nikalBtn.addEventListener("mouseover",()=>{
+  displacementCount++;
+  let [x,y]=keepInside(Math.random()*(window.innerWidth-100),Math.random()*(window.innerHeight-50));
+  nikalBtn.style.left=x+"px";
+  nikalBtn.style.top=y+"px";
+  nikalBtn.style.transform=`rotate(${Math.random()*60-30}deg)`;
+  makeItShake(nikalBtn);
+  if(displacementCount>=2){showGifNearButton(); displacementCount=0;}
+});
+nikalBtn.addEventListener("click",()=>{
+  let [x,y]=keepInside(Math.random()*(window.innerWidth-100),Math.random()*(window.innerHeight-50));
+  nikalBtn.style.left=x+"px";
+  nikalBtn.style.top=y+"px";
+  nikalBtn.style.transform=`rotate(${Math.random()*90-45}deg)`;
+  makeItShake(nikalBtn);
+  showGifNearButton();
+});
+</script>
+</body>
+</html>

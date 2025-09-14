@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Special Celebration</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #0a0a0a;
+    font-family: 'Comic Sans MS', cursive;
+    text-align: center;
+    overflow: scroll; /* always show scroll bar */
+    animation: fadeInPage 2s ease-in-out;
+    position: relative;
+  }
+  @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Flags */
+  .flags { display: flex; justify-content: center; gap: 10px; padding: 10px; }
+  .flag { width: 50px; height: 70px; background: #ff4d80; clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%); animation: swing 2s ease-in-out infinite; }
+  @keyframes swing { 0%,100% { transform: rotate(5deg); } 50% { transform: rotate(-5deg); } }
+
+  /* Floating hearts */
+  .heart { position: absolute; bottom: -20px; font-size: 12px; color: rgba(255,182,193,0.8); animation: floatUp 6s linear infinite; }
+  @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0; } }
+
+  /* Falling stars */
+  .star { position: absolute; top: -10px; width: 2px; height: 80px; background: white; opacity: 0.8; transform: rotate(45deg); animation: fallStar 3s linear infinite; }
+  @keyframes fallStar { 0% { transform: translateY(0) rotate(45deg); opacity:1; } 100% { transform: translateY(100vh) rotate(45deg); opacity:0; } }
+
+  /* Balloons */
+  .balloon { position: absolute; width: 30px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ff7aa2,#ff4d80); animation: rise 6s linear infinite, sway 3s ease-in-out infinite alternate; }
+  @keyframes rise { 0%{transform:translateY(100vh);opacity:0;}20%{opacity:1;}100%{transform:translateY(-120px);opacity:0;} }
+  @keyframes sway {0%{transform:translateX(0px);}50%{transform:translateX(15px);}100%{transform:translateX(0px);} }
+
+  /* Hanging Balloons */
+  .hangingBalloon {
+    position: absolute;
+    top: -40px;
+    width: 30px;
+    height: 40px;
+    border-radius: 50%;
+    animation: swing 2s ease-in-out infinite alternate;
+  }
+
+  /* Buttons */
+  .btn { padding:10px 18px; font-size:16px; border:none; border-radius:10px; cursor:pointer; margin:10px; background:#ff4d80; color:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.3); transition: transform 0.3s ease; animation: bounceBtn 1.5s infinite alternate; }
+  .btn:hover { transform: scale(1.1); }
+  @keyframes bounceBtn { 0%{transform:translateY(0);}100%{transform:translateY(-5px);} }
+
+  /* GIF */
+  #romanticGif { display:none; width:500px; max-width:80%; margin:20px auto; border-radius:15px; box-shadow:0 0 25px rgba(255,105,180,0.7); }
+  #romanticGif.show { display:block; }
+
+  /* Text below GIF */
+  #danceText { 
+    margin-top:20px; 
+    font-size:24px; 
+    color:#fff; 
+    display:none;
+  }
+
+  /* Next button */
+  #nextBtn { 
+    display:inline-block; 
+    margin:20px auto; 
+    padding:8px 14px; 
+    font-size:14px; 
+    border-radius:8px; 
+    background:#32cd32; 
+    color:white; 
+    cursor:pointer; 
+    border:none; 
+    opacity:0;
+    transition: opacity 1s ease;
+    animation: glow 1.5s infinite alternate;
+  }
+  #nextBtn.show { opacity:1; }
+
+  @keyframes glow { from{box-shadow:0 0 5px #32cd32,0 0 10px #32cd32;} to{box-shadow:0 0 20px #00ff7f,0 0 30px #00ff7f;} }
+</style>
+</head>
+<body>
+
+<!-- Flags (Single Layer) -->
+<div class="flags">
+  <div class="flag"></div>
+  <div class="flag" style="background:#ffa500;"></div>
+  <div class="flag" style="background:#00bfff;"></div>
+  <div class="flag" style="background:#32cd32;"></div>
+  <div class="flag" style="background:#ff69b4;"></div>
+  <div class="flag" style="background:#9400d3;"></div>
+  <div class="flag" style="background:#ff4500;"></div>
+  <div class="flag" style="background:#1e90ff;"></div>
+  <div class="flag" style="background:#00fa9a;"></div>
+  <div class="flag" style="background:#ffd700;"></div>
+</div>
+
+<!-- Hanging Balloons -->
+<div class="hangingBalloon" style="left:5%; background: #ff4d80;"></div>
+<div class="hangingBalloon" style="left:15%; background: #ffa500;"></div>
+<div class="hangingBalloon" style="left:25%; background: #00bfff;"></div>
+<div class="hangingBalloon" style="left:35%; background: #32cd32;"></div>
+<div class="hangingBalloon" style="left:45%; background: #ff69b4;"></div>
+<div class="hangingBalloon" style="left:55%; background: #9400d3;"></div>
+<div class="hangingBalloon" style="left:65%; background: #ff4500;"></div>
+<div class="hangingBalloon" style="left:75%; background: #1e90ff;"></div>
+<div class="hangingBalloon" style="left:85%; background: #00fa9a;"></div>
+
+<!-- Container -->
+<div id="container">
+  <img id="romanticGif" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWUxdmF5dzlncThqY2xhaGszM2xnbXVzanVtNzQ2Z2ljYmhubjl0cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/h8ErZIYJaYQiJTXDST/giphy.gif" alt="Romantic Gif">
+
+  <!-- Text below GIF -->
+  <div id="danceText">
+    Agar dance kia ho gya ho 😍
+  </div>
+
+  <div style="margin-top:40px;">
+    <button class="btn" id="lightsBtn">Click me to Light</button>
+    <button class="btn" id="closerBtn" style="display:none;">Click to Come Closer & Hold My Hand</button>
+  </div>
+
+  <button id="nextBtn">chale next page pe</button>
+</div>
+
+<!-- Hidden music -->
+<audio id="bgMusic" loop hidden>
+  <source src="celebration.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Effects containers -->
+<div id="hearts"></div>
+<div id="stars"></div>
+
+<script>
+const lightsBtn = document.getElementById("lightsBtn");
+const closerBtn = document.getElementById("closerBtn");
+const romanticGif = document.getElementById("romanticGif");
+const danceText = document.getElementById("danceText");
+const nextBtn = document.getElementById("nextBtn");
+const bgMusic = document.getElementById("bgMusic");
+
+// Initially hide next button
+nextBtn.style.display = "inline-block";
+nextBtn.classList.remove("show");
+
+// Lights button
+lightsBtn.addEventListener("click", () => {
+  document.body.style.background = "pink";
+  closerBtn.style.display = "inline-block";
+});
+
+// Closer button
+closerBtn.addEventListener("click", () => {
+  romanticGif.classList.add("show");
+  danceText.style.display = "block"; // show text
+  bgMusic.play();
+
+  // Hide both buttons
+  lightsBtn.style.display = "none";
+  closerBtn.style.display = "none";
+
+  // Show next button after 4 sec
+  setTimeout(() => { nextBtn.classList.add("show"); }, 4000);
+});
+
+// Next button
+nextBtn.addEventListener("click", () => {
+  window.location.href = "sixth.html";
+});
+
+// Floating hearts
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.textContent = "♥️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (12 + Math.random() * 10) + "px";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.getElementById("hearts").appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
+}
+setInterval(createHeart, 500);
+
+// Falling stars
+function createStar() {
+  const star = document.createElement("div");
+  star.classList.add("star");
+  star.style.left = Math.random() * 100 + "vw";
+  star.style.animationDuration = (2 + Math.random() * 3) + "s";
+  document.getElementById("stars").appendChild(star);
+  setTimeout(() => star.remove(), 4000);
+}
+setInterval(createStar, 800);
+
+// Balloons rising from bottom
+setInterval(() => {
+  let b = document.createElement("div");
+  b.classList.add("balloon");
+  b.style.left = Math.random() * 90 + "vw";
+  b.style.animationDuration = (6 + Math.random() * 4) + "s";
+  document.body.appendChild(b);
+  setTimeout(() => b.remove(), 8000);
+}, 1000);
+</script>
+
+</body>
+</html>
