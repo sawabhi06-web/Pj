@@ -173,16 +173,27 @@ setInterval(() => {
 function updateClocks() {
   const start1 = new Date("2000-09-17T12:00:00");
   const start2 = new Date("2024-03-15T15:00:00");
-  const now = new Date();
 
   function diffString(start) {
-    let diff = Math.floor((now - start) / 1000);
-    const years = Math.floor(diff / (365*24*60*60)); diff %= 365*24*60*60;
-    const months = Math.floor(diff / (30*24*60*60)); diff %= 30*24*60*60;
-    const days = Math.floor(diff / (24*60*60)); diff %= 24*60*60;
-    const hours = Math.floor(diff / 3600); diff %= 3600;
-    const minutes = Math.floor(diff / 60); 
-    const seconds = diff % 60;
+    let now = new Date();
+
+    let years = now.getFullYear() - start.getFullYear();
+    let months = now.getMonth() - start.getMonth();
+    let days = now.getDate() - start.getDate();
+    let hours = now.getHours() - start.getHours();
+    let minutes = now.getMinutes() - start.getMinutes();
+    let seconds = now.getSeconds() - start.getSeconds();
+
+    if (seconds < 0) { seconds += 60; minutes--; }
+    if (minutes < 0) { minutes += 60; hours--; }
+    if (hours < 0) { hours += 24; days--; }
+    if (days < 0) {
+      let prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      days += prevMonth;
+      months--;
+    }
+    if (months < 0) { months += 12; years--; }
+
     return `${years} Years ${months} Months ${days} Days ${hours} Hours ${minutes} Min ${seconds} Sec`;
   }
 
